@@ -31,8 +31,8 @@ It integrates with the Google YouTube Data V3 API to display video from the HCA 
 
 ### Pending Tasks
 > 1. Bringing uniformity to to all card elements in the front page, currently cards can be rendered in different sizes
-> 2. Generating unit tests through JEST
-> 3. Introduce Pagination to allow for More videos to be viewable by the end user.
+> 2. Conduct thorough testing with framework like JEST.
+> 3. Introduce Pagination to allow for more videos to be viewable by the end user.
 
 ## For any questions contact:
 Aditya Samant
