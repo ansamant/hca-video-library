@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+##### HCA Front End Dev Code Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This application was put together for the HCA Front End Dev Code Challenge. 
+It integrates with the Google YouTube Data V3 API to display video from the HCA YouTube channels.
 
-## Available Scripts
+## The Application Should:
 
-In the project directory, you can run:
+> * Display HCAs COVID-19 videos, with “COVID 19 Vaccine Podcast” videos always showing first in the list
+> * Show HCA videos that are not COVID 19 related
+> * Allows users to search a title within the context of a specific video grouping
+> * Grant the user the ability to see information about a specific video before watching it
+> * Grant  ability to watch a video without leaving the page
 
-### `npm start`
+# To Run the application:
+> - Run npm install to ensure all the package dependencies are properly placed
+> - Go to Google API and create your own personal API Key
+> - Go to src/apis/youtube.js and assign your API key to the API_KEY variable
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## External Packages Used:
+> 1. Material-UI v4: For styling
+> 2. React Router: to navigate between pages
+> 3. Axios: for get requests
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Resources:
+> - HCA YouTube Channel: https://www.youtube.com/channel/UCL03ygcTgIbe36o2Z7sReuQ
+> - Getting started w/YouTube API: https://developers.google.com/youtube/v3/getting-started
+> - How to use API: https://developers.google.com/youtube/v3/docs
+> - Endpoint documentation: https://developers.google.com/youtube/v3/docs/search/list
+> - Facebook Create-React-App README.md: https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Pending Tasks
+> 1. Bringing uniformity to to all card elements in the front page, currently cards can be rendered in different sizes
+> 2. Generating unit tests through JEST
+> 3. Introduce Pagination to allow for More videos to be viewable by the end user.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## For any questions contact:
+Aditya Samant
+email: adityasamant2505@gmail.com
+phone: (443)691-1619
