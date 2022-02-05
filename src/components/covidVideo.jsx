@@ -1,3 +1,9 @@
+/**
+ * Purpose: Display Covid-19 related videos in YouTube.
+ * 
+ */
+
+//Imports
 import React, {useState, useEffect} from 'react';
 import Header from "./Header";
 import {alpha,
@@ -5,20 +11,24 @@ import {alpha,
         Card,
         CardContent,
         CardMedia,
+        IconButton,
         InputBase,
         makeStyles,
-        Typography
+        Typography,
+        Collapse
     } from '@material-ui/core';
 import youtubeAPI from '../apis/youtube';
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
+
 //const playlistId = 'PLogA9DP2_vSekxHP73PXaKD6nbOK56CJw';
+
+//Styling
  const useStyles = makeStyles((theme) =>({
     toolbar: theme.mixins.toolbar,
     gridContainer:{
         minHeight:"100vh",
-    },
-    media:{
-        width:"80%",
     },
     search:{
         position: 'relative',
@@ -59,22 +69,35 @@ import SearchIcon from '@material-ui/icons/Search'
         },
     },
  }));
+
+
 export default function CovidVideos(){
+    //Consructors
     const [data,setData] = useState([]);
+    const [alert, setAlert] = useState(false);
+
+    //403 Error Msg
+    const timeOutMsg = "403 Error: The maximum number of Requests to be made for the Day, has been reached."+
+                        "Please try again tommorrow. ";
+
+    //If app loads or reloads: Populate either from API or from Session Storage.
     useEffect(()=>{
        const stored = sessionStorage.getItem("covidVidData");
        if(stored && data.length === 0){
-         console.log("GETTING FROM COVID SESSION STORED");
+         //console.log("GETTING FROM COVID SESSION STORED");
          const resData = JSON.parse(stored);
          setData(resData.items);
        }
        else if(data.length === 0 && !stored){
             async function getCovidVids(){
-                console.log("GETTING COVID VIDS")
+                //console.log("GETTING COVID VIDS")
                 let response = await youtubeAPI.get('/search', {params:{
                     q:'COVID-19 Vaccine Podcast',
                 }}).catch(function(error){
                        console.log("ERROR!!", error.response);
+                       if(error.response.error.code === 403){
+                           setAlert(true);
+                       }
                 });
                 sessionStorage.setItem("covidVidData", JSON.stringify(response.data));
                 setData(response.data.items);
@@ -86,14 +109,14 @@ export default function CovidVideos(){
     const keyPress = (event) =>{
         if(event.key === 'Enter'){
             event.preventDefault();
-            console.log("EVENT: ", event.target.value);
+            //console.log("EVENT: ", event.target.value);
             const keywords = event.target.value;
             let filteredVids = data.filter(item => item.snippet.title.includes(keywords));
             if(filteredVids.length === 0){
                 alert("No Videos in this List match this description, please try other list.")
                 setData([]);
             }else{
-                console.log("DATA1:", filteredVids);
+                
                 setData(filteredVids);
             }
             
@@ -102,16 +125,40 @@ export default function CovidVideos(){
     return(
         <div className="container">
             <Header />
+            {/*Show alert */}
+            <Collapse in={alert}>
+                <Alert
+                    variant="filled"
+                    severity="error"
+                    action={
+                     <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setAlert(false);
+                                }}
+                    >
+                        <CloseIcon fontSize="inherit"/>
+                    </IconButton>
+                    }
+                >  
+                    {timeOutMsg}
+                </Alert>
+            </Collapse>
+
             {/*Create space between grid & app bar*/}
-            <div className={classes.toolbar}> </div>
-                <Grid container 
+             <div className={classes.toolbar}> </div>
+
+             {/*Render YouTube Videos in Components*/}
+            <Grid container 
                       direction="column"
                       spacing={3}
                       justifyContent='center'
-                      alignItems='center'
+                      alignItems="center"
                       className={classes.gridContainer}
                 >
-                <Grid xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <div className={classes.search}>
                   <div className={classes.searchIcon}>
                     <SearchIcon />

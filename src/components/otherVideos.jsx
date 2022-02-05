@@ -1,3 +1,9 @@
+/**
+ * Purpose: Display All other videos in YouTube channel besides Covid-19 related ones.
+ * 
+ */
+
+//Imports
 import React, {useState, useEffect} from 'react';
 import Header from "./Header";
 import youtubeAPI from '../apis/youtube';
@@ -8,13 +14,23 @@ import {alpha,
         CardMedia,
         InputBase,
         makeStyles,
-        Typography
+        Typography,
+        Collapse,
+        IconButton
     } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search'
+import Alert from '@material-ui/lab/Alert';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+
+
+//Styling
 const useStyles = makeStyles((theme) =>({
     toolbar: theme.mixins.toolbar,
     gridContainer:{
         minHeight:"100vh",
+    },
+    gridItem:{
+        alignContent:"stretch",
     },
     search:{
         position: 'relative',
@@ -57,24 +73,33 @@ const useStyles = makeStyles((theme) =>({
  }));
 
 export default function OtherVideos(){
+    //Constructors
     const [data,setData] = useState([]);
+    const [alert, setAlert] = useState(false);
+
+    //Error Code 403 Message
+    const timeOutMsg = "403 Error: The maximum number of Requests to be made for the Day, has been reached."
+                       + "Please try again tommorrow.";
+
+    //If app loads or reloads: Populate either from API or from Session Storage.
     useEffect(()=>{
-        //useEffect fires every time page loads
-        //to limit API calls, we set data into session storage.
         const stored = sessionStorage.getItem("otherVidData");
         if(stored && data.length === 0){
-            console.log("GETTING NON-COVID SESSION STORED");
+            //console.log("GETTING NON-COVID SESSION STORED");
             const resData = JSON.parse(stored);
             setData(resData.items);
         }
         else if(data.length === 0 && !stored){
-            console.log("GETTING NON-COVID VIDS");
+            //console.log("GETTING NON-COVID VIDS");
             async function getOtherVids(){
                 // Make sure to filter query so it has nothing to do with keywords used in previous query
                 let response = await youtubeAPI.get('search', {params:{
                 q:'-COVID -19 -Vaccine -Podcast',
                 }}).catch(function(error){
                        console.log("ERROR!!", error.response);
+                        if(error.response.error.code === 403){
+                           setAlert(true);
+                        }
                 });
                 sessionStorage.setItem("otherVidData", JSON.stringify(response.data));
                 setData(response.data.items);
@@ -83,18 +108,21 @@ export default function OtherVideos(){
         }
        
     },[data]);
+
     const classes  = useStyles();
+
+    //If user Searches something, filter data.
     const keyPress = (event) =>{
         if(event.key === 'Enter'){
             event.preventDefault();
-            console.log("EVENT: ", event.target.value);
+            //console.log("EVENT: ", event.target.value);
             const keywords = event.target.value;
             let filteredVids = data.filter(item => item.snippet.title.includes(keywords));
             if(filteredVids.length === 0){
                 alert("No Videos in this List match this description, please try other list.")
                 setData([]);
             }else{
-                console.log("DATA1:", filteredVids);
+                
                 setData(filteredVids);
             }
             
@@ -103,16 +131,41 @@ export default function OtherVideos(){
     return(
 
          <div className="container">
+            
             <Header />
-            {/*Create space between grid & app bar*/}
+
+            {/*Alert User in case, nothing is populated in storage and 
+            Max API calls are reached */}
+            <Collapse in={alert}>
+                <Alert action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() =>{
+                            setAlert(false);
+                        }}
+                    >
+                        <CloseIcon fontSize="inherit"/>
+                    </IconButton>
+                }
+                severity="error"
+                variant="filled"
+                >
+                    {timeOutMsg}
+                </Alert>
+            </Collapse>
+             {/*Create space between grid & app bar*/}
             <div className={classes.toolbar}></div>
-                <Grid container 
+
+            {/*Grid Component */}
+            <Grid container 
                   direction="column"
                   spacing={3}
                   justifyContent='center'
                   alignItems='center'
             >
-            <Grid xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
                   <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -130,7 +183,7 @@ export default function OtherVideos(){
             </Grid>
             {data.length > 0 ?(
                     data.map((item) => (
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={3} className={classes.gridItem}>
                             <Card>
                                   <CardMedia 
                                              component="iframe"

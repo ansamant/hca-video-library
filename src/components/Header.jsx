@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
 import { AppBar, 
          CssBaseline,   
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   appBar:{
     backgroundColor: "#e05929",
     color: "#fff",
-    position: "static"
+    position: "static",
   },
   barItems:{
     paddingLeft: 13,
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'inherit'
   }, 
   title: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    flexGrow: 1
   },
 }));
 
@@ -42,7 +43,7 @@ export default function Header() {
                     <Link to="/" className={classes.barItems}>
                       <Typography variant="h6" textAlign="center">Covid Videos</Typography>
                     </Link>
-                    <Link to="/:otherVideos" className={classes.barItems} style={{flex: 1}}>
+                    <Link to="/:otherVideos" className={classes.barItems}>
                       <Typography variant="h6" textAlign="center" >Other Videos</Typography>
                     </Link>
                 </Toolbar>
