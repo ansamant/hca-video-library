@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Youtube API
-/src/apis
+/src/apis/youtube.js
 README.md
