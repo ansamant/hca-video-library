@@ -94,11 +94,15 @@ export default function OtherVideos() {
       //console.log("GETTING NON-COVID VIDS");
       async function getOtherVids() {
         // Make sure to filter query so it has nothing to do with keywords used in previous query
-        let response = await youtubeAPI
+        await youtubeAPI
           .get("search", {
             params: {
               q: "-COVID -19 -Vaccine -Podcast",
             },
+          })
+          .then((res) => {
+            sessionStorage.setItem("otherVidData", JSON.stringify(res.data));
+            setData(res.data.items);
           })
           .catch(function (error) {
             console.log("ERROR!!", error.response);
@@ -106,8 +110,6 @@ export default function OtherVideos() {
               setAlert(true);
             }
           });
-        sessionStorage.setItem("otherVidData", JSON.stringify(response.data));
-        setData(response.data.items);
       }
       getOtherVids();
     }
@@ -119,10 +121,9 @@ export default function OtherVideos() {
   const keyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      //console.log("EVENT: ", event.target.value);
       const keywords = event.target.value;
       let filteredVids = data.filter((item) =>
-        item.snippet.title.includes(keywords)
+        item.snippet.title.toLowerCase().includes(keywords.toLowerCase())
       );
       if (filteredVids.length === 0) {
         setNotFound(true);
@@ -131,6 +132,13 @@ export default function OtherVideos() {
       } else {
         setData(filteredVids);
       }
+    }
+  };
+
+  const handleBlank = (event) => {
+    if (event.target.value === "") {
+      const item = JSON.parse(sessionStorage.getItem("otherVidData"));
+      setData(item.items);
     }
   };
   return (
@@ -190,18 +198,20 @@ export default function OtherVideos() {
         justifyContent="space-between"
         alignItems="stretch"
       >
-        <Grid item xs={12}>
+        <Grid item xs={12} alignItems="center">
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search and Press Enter…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              fullWidth={true}
               onKeyDown={keyPress}
+              onChange={handleBlank}
               inputProps={{ "aria-label": "search" }}
             />
           </div>

@@ -97,11 +97,15 @@ export default function CovidVideos() {
     } else if (data.length === 0 && !stored) {
       async function getCovidVids() {
         //console.log("GETTING COVID VIDS")
-        let response = await youtubeAPI
+        await youtubeAPI
           .get("/search", {
             params: {
               q: "COVID-19 Vaccine Podcast",
             },
+          })
+          .then((res) => {
+            sessionStorage.setItem("covidVidData", JSON.stringify(res.data));
+            setData(res.data.items);
           })
           .catch(function (error) {
             console.log("ERROR!!", error.response);
@@ -109,8 +113,6 @@ export default function CovidVideos() {
               setAlert(true);
             }
           });
-        sessionStorage.setItem("covidVidData", JSON.stringify(response.data));
-        setData(response.data.items);
       }
       getCovidVids();
     }
@@ -119,10 +121,9 @@ export default function CovidVideos() {
   const keyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      //console.log("EVENT: ", event.target.value);
       const keywords = event.target.value;
       let filteredVids = data.filter((item) =>
-        item.snippet.title.includes(keywords)
+        item.snippet.title.toLowerCase().includes(keywords.toLowerCase())
       );
       if (filteredVids.length === 0) {
         setNotFound(true);
@@ -131,6 +132,12 @@ export default function CovidVideos() {
       } else {
         setData(filteredVids);
       }
+    }
+  };
+  const handleBlank = (event) => {
+    if (event.target.value === "") {
+      const item = JSON.parse(sessionStorage.getItem("covidVidData"));
+      setData(item.items);
     }
   };
   return (
@@ -202,7 +209,9 @@ export default function CovidVideos() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              fullWidth={true}
               onKeyDown={keyPress}
+              onChange={handleBlank}
               inputProps={{ "aria-label": "search" }}
             />
           </div>
