@@ -6,6 +6,7 @@
 //Imports
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
+import youtubeAPI from "../apis/youtube";
 import {
   alpha,
   Grid,
@@ -18,7 +19,7 @@ import {
   Typography,
   Collapse,
 } from "@material-ui/core";
-import youtubeAPI from "../apis/youtube";
+
 import SearchIcon from "@material-ui/icons/Search";
 import CloseIcon from "@material-ui/icons/Close";
 import Alert from "@material-ui/lab/Alert";
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   gridContainer: {
     minHeight: "100vh",
+    paddingBottom: theme.spacing(10),
   },
   card: {
     height: "400 px",
@@ -188,7 +190,6 @@ export default function CovidVideos() {
         spacing={3}
         justifyContent="space-between"
         alignItems="stretch"
-        className={classes.gridContainer}
       >
         <Grid item xs={12}>
           <div className={classes.search}>
@@ -219,12 +220,17 @@ export default function CovidVideos() {
             >
               <CardMedia
                 component="iframe"
-                title="test"
+                title={item.snippet.title}
                 src={`https://www.youtube.com/embed/${item.id.videoId}`}
                 allowFullScreen
               />
               <CardContent>
-                <Typography align="center" gutterBottom variant="h5">
+                <Typography
+                  align="center"
+                  gutterBottom
+                  variant="h5"
+                  component="h2"
+                >
                   {item.snippet.title}
                 </Typography>
                 <Typography align="left" variant="subtitle">

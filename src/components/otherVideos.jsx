@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import youtubeAPI from "../apis/youtube";
+
 import {
   alpha,
   Grid,
@@ -217,7 +218,7 @@ export default function OtherVideos() {
             >
               <CardMedia
                 component="iframe"
-                title="test"
+                title={item.snippet.title}
                 src={`https://www.youtube.com/embed/${item.id.videoId}`}
                 allowFullScreen
               />
