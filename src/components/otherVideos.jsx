@@ -139,7 +139,7 @@ export default function OtherVideos() {
   const handleBlank = (event) => {
     if (event.target.value === "") {
       const item = JSON.parse(sessionStorage.getItem("otherVidData"));
-      setData(item.items);
+      setData(item);
     }
   };
   return (

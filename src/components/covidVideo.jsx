@@ -138,7 +138,7 @@ export default function CovidVideos() {
   const handleBlank = (event) => {
     if (event.target.value === "") {
       const item = JSON.parse(sessionStorage.getItem("covidVidData"));
-      setData(item.items);
+      setData(item);
     }
   };
   return (
