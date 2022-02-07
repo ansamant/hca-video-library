@@ -89,7 +89,7 @@ export default function OtherVideos() {
     if (stored && data.length === 0) {
       //console.log("GETTING NON-COVID SESSION STORED");
       const resData = JSON.parse(stored);
-      setData(resData.items);
+      setData(resData);
     } else if (data.length === 0 && !stored) {
       //console.log("GETTING NON-COVID VIDS");
       async function getOtherVids() {
@@ -98,10 +98,11 @@ export default function OtherVideos() {
           .get("search", {
             params: {
               q: "-COVID -19 -Vaccine -Podcast",
+              order: "date",
             },
           })
           .then((res) => {
-            sessionStorage.setItem("otherVidData", JSON.stringify(res.data));
+            sessionStorage.setItem("otherVidData", JSON.stringify(res.data.items));
             setData(res.data.items);
           })
           .catch(function (error) {

@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function CovidVideos() {
   //Consructors
   const [data, setData] = useState([]);
@@ -93,7 +94,7 @@ export default function CovidVideos() {
     if (stored && data.length === 0) {
       //console.log("GETTING FROM COVID SESSION STORED");
       const resData = JSON.parse(stored);
-      setData(resData.items);
+      setData(resData);
     } else if (data.length === 0 && !stored) {
       async function getCovidVids() {
         //console.log("GETTING COVID VIDS")
@@ -104,7 +105,7 @@ export default function CovidVideos() {
             },
           })
           .then((res) => {
-            sessionStorage.setItem("covidVidData", JSON.stringify(res.data));
+            sessionStorage.setItem("covidVidData", JSON.stringify(res.data.items));
             setData(res.data.items);
           })
           .catch(function (error) {
