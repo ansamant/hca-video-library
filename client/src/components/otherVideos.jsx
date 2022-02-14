@@ -6,8 +6,6 @@
 //Imports
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import youtubeAPI from "../apis/youtube";
-
 import {
   alpha,
   Grid,
@@ -94,23 +92,36 @@ export default function OtherVideos() {
       //console.log("GETTING NON-COVID VIDS");
       async function getOtherVids() {
         // Make sure to filter query so it has nothing to do with keywords used in previous query
-        await youtubeAPI
-          .get("search", {
-            params: {
-              q: "-COVID -19 -Vaccine -Podcast",
-              order: "date",
-            },
-          })
-          .then((res) => {
-            sessionStorage.setItem("otherVidData", JSON.stringify(res.data.items));
-            setData(res.data.items);
-          })
-          .catch(function (error) {
-            console.log("ERROR!!", error.response);
-            if (error.response.status === 403) {
-              setAlert(true);
-            }
-          });
+        // await youtubeAPI
+        //   .get("search", {
+        //     params: {
+        //       q: "-COVID -19 -Vaccine -Podcast",
+        //       order: "date",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     sessionStorage.setItem("otherVidData", JSON.stringify(res.data.items));
+        //     setData(res.data.items);
+        //   })
+        //   .catch(function (error) {
+        //     console.log("ERROR!!", error.response);
+        //     if (error.response.status === 403) {
+        //       setAlert(true);
+        //     }
+        //   });
+        await fetch('api/getOtherVideos')
+        .then((res)=>res.json())
+        .then((items) =>{
+          console.log("RESJSON:",items);
+          sessionStorage.setItem("otherVidData", JSON.stringify(items));
+          setData(items);
+        })
+        .catch(function(error){
+          console.log("ERROR!", error.response)
+          if(error.response.status === 403){
+            setAlert(true);
+          }
+        });
       }
       getOtherVids();
     }

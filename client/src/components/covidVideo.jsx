@@ -6,7 +6,6 @@
 //Imports
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import youtubeAPI from "../apis/youtube";
 import {
   alpha,
   Grid,
@@ -92,33 +91,32 @@ export default function CovidVideos() {
   useEffect(() => {
     const stored = sessionStorage.getItem("covidVidData");
     if (stored && data.length === 0) {
-      //console.log("GETTING FROM COVID SESSION STORED");
+      console.log("GETTING FROM COVID SESSION STORED");
       const resData = JSON.parse(stored);
       setData(resData);
     } else if (data.length === 0 && !stored) {
       async function getCovidVids() {
-        //console.log("GETTING COVID VIDS")
-        await youtubeAPI
-          .get("/search", {
-            params: {
-              q: "COVID-19 Vaccine Podcast",
-            },
-          })
-          .then((res) => {
-            sessionStorage.setItem("covidVidData", JSON.stringify(res.data.items));
-            setData(res.data.items);
-          })
-          .catch(function (error) {
-            console.log("ERROR!!", error.response);
-            if (error.response.status === 403) {
-              setAlert(true);
-            }
-          });
+        // console.log("IN COVID method!");
+        await fetch('api/getCovidVideos')
+        .then((res)=>res.json())
+        .then((items) =>{
+          //console.log("RESJSON:",items);
+          sessionStorage.setItem("covidVidData", JSON.stringify(items));
+          setData(items);
+        })
+        .catch(function(error){
+          console.log("ERROR!", error.response)
+          if(error.response.status === 403){
+            setAlert(true);
+          }
+        });
       }
       getCovidVids();
     }
   }, [data, alert]);
+
   const classes = useStyles();
+
   const keyPress = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();

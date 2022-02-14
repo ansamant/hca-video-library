@@ -1,0 +1,33 @@
+{
+  "name": "hca-video-library",
+  "version": "1.0.0",
+  "description": "REST queries to  Google YouTube v3 with Node Express server and a ReactJS client",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ansamant/hca-video-library.git"
+  },
+  "keywords": [
+    "express",
+    "youtube",
+    "api",
+    "REST",
+    "reactjs",
+    "hca",
+    "healthcare"
+  ],
+  "author": "Aditya Samant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ansamant/hca-video-library/issues"
+  },
+  "homepage": "https://github.com/ansamant/hca-video-library#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2"
+  }
+}
