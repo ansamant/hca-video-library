@@ -91,24 +91,6 @@ export default function OtherVideos() {
     } else if (data.length === 0 && !stored) {
       //console.log("GETTING NON-COVID VIDS");
       async function getOtherVids() {
-        // Make sure to filter query so it has nothing to do with keywords used in previous query
-        // await youtubeAPI
-        //   .get("search", {
-        //     params: {
-        //       q: "-COVID -19 -Vaccine -Podcast",
-        //       order: "date",
-        //     },
-        //   })
-        //   .then((res) => {
-        //     sessionStorage.setItem("otherVidData", JSON.stringify(res.data.items));
-        //     setData(res.data.items);
-        //   })
-        //   .catch(function (error) {
-        //     console.log("ERROR!!", error.response);
-        //     if (error.response.status === 403) {
-        //       setAlert(true);
-        //     }
-        //   });
         await fetch('api/getOtherVideos')
         .then((res)=>res.json())
         .then((items) =>{
@@ -117,8 +99,8 @@ export default function OtherVideos() {
           setData(items);
         })
         .catch(function(error){
-          console.log("ERROR!", error.response)
-          if(error.response.status === 403){
+          console.error(error)
+          if(error['code'] === 403){
             setAlert(true);
           }
         });
@@ -140,7 +122,7 @@ export default function OtherVideos() {
       if (filteredVids.length === 0) {
         setNotFound(true);
         const item = JSON.parse(sessionStorage.getItem("otherVidData"));
-        setData(item.items);
+        setData(item);
       } else {
         setData(filteredVids);
       }

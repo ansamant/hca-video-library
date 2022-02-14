@@ -105,8 +105,8 @@ export default function CovidVideos() {
           setData(items);
         })
         .catch(function(error){
-          console.log("ERROR!", error.response)
-          if(error.response.status === 403){
+          console.error(error)
+          if(error['code'] === 403){
             setAlert(true);
           }
         });
@@ -127,7 +127,7 @@ export default function CovidVideos() {
       if (filteredVids.length === 0) {
         setNotFound(true);
         const item = JSON.parse(sessionStorage.getItem("covidVidData"));
-        setData(item.items);
+        setData(item);
       } else {
         setData(filteredVids);
       }

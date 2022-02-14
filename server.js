@@ -60,24 +60,63 @@ app.get('/api/getCovidVideos', async(req, res) =>{
     let items = [];
     const query = "COVID-19 Vaccine Podcast";
     let response = await getVideos(query);
-    items = response.items;
-    while('nextPageToken' in response){
-        response = await getVideos(query, response['nextPageToken']);
-        items.push(...response['items']);
+    if("code" in response){
+       res.status(response["code"]).send(response["message"]);
+       res.end();
     }
-    res.json(items);
-    res.end();
+    else{
+        items = response.items;
+        while('nextPageToken' in response){
+            response = await getVideos(query, response['nextPageToken']);
+            if("code" in response){
+                
+                break;
+            }
+            else{
+                items.push(...response['items']);
+            }
+            
+        }
+        if("code" in response){
+            res.status(response["code"]).send(response["message"]);
+            res.end()
+        }else{
+            res.json(items);
+            res.end();
+        }
+        
+        
+    }
+    
 });
 app.get('/api/getOtherVideos', async(req, res) =>{
     let items = [];
     const query = "-COVID -19 -Vaccine -Podcast";
     let response = await getVideos(query);
-    items = response.items;
-    while('nextPageToken' in response){
-        response = await getVideos(query, response['nextPageToken']);
-        items.push(...response['items']);
+     if("code" in response){
+       res.status(response["code"]).send(response['message'])
+       res.end();
     }
-    res.json(items);
-    res.end();
+    else{
+        items = response.items;
+        while('nextPageToken' in response){
+            response = await getVideos(query, response['nextPageToken']);
+             if("code" in response){
+                break;
+            }
+            else{
+                items.push(...response['items']);
+            }
+        }
+        if("code" in response){
+             res.status(response["code"]).send(response["message"]);
+             res.end()
+        }
+        else{
+            res.json(items);
+            res.end();
+        }
+        
+    }
 });
 app.listen(port, () => console.log(`Server started on ${port}`));
