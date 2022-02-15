@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.PORT;
 
 const API_URL = `https://www.googleapis.com/youtube/v3/search`;
-const API_KEY = process.env.API_KEY;//"AIzaSyDexPeBv0lqnTP9YMl_38y9HXMHDoaIvcg";
-const CHANNEL_ID = process.env.CHANNEL_ID; //"UCL03ygcTgIbe36o2Z7sReuQ";
+const API_KEY = process.env.API_KEY;
+const CHANNEL_ID = process.env.CHANNEL_ID; 
 
 
 //Instantiations
