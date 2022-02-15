@@ -12,9 +12,11 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CardActionArea,
   IconButton,
   InputBase,
   makeStyles,
+  Modal,
   Typography,
   Collapse,
 } from "@material-ui/core";
@@ -73,6 +75,24 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  modal:{
+    position: 'absolute',
+    verticalAlign:"middle",
+    paddingLeft:"25%",
+    paddingRight:"25%",
+    paddingTop:"25%",
+    border: '2px solid #000'
+  },
+  modalCard:{
+    flexDirection:'row',
+    display:'flex',
+    alignItems:'stretch',
+    height:"75%",
+  },
+  modalMedia:{
+    flexGrow: 1,
+  }
+
 }));
 
 
@@ -81,6 +101,13 @@ export default function CovidVideos() {
   const [data, setData] = useState([]);
   const [alert, setAlert] = useState(false);
   const [notFound, setNotFound] = useState(false);
+
+  //set Video Data
+  const [videoInfo, setVideoInfo] = useState({
+    'title': "",
+    'src': ""
+  });
+  const [hideVideo, setHideVideo] = useState(false);
 
   //403 Error Msg
   const timeOutMsg =
@@ -138,6 +165,10 @@ export default function CovidVideos() {
       const item = JSON.parse(sessionStorage.getItem("covidVidData"));
       setData(item);
     }
+  };
+
+  const closeVideo = ()=>{
+    setHideVideo(false);  
   };
   return (
     <div className={classes.container}>
@@ -226,31 +257,41 @@ export default function CovidVideos() {
               component={Card}
               className={classes.card}
             >
-              <CardMedia
-                component="iframe"
-                title={item.snippet.title}
-                src={`https://www.youtube.com/embed/${item.id.videoId}`}
-                allowFullScreen
-              />
-              <CardContent>
-                <Typography
-                  align="center"
-                  gutterBottom
-                  variant="h5"
-                  component="h2"
-                >
-                  {item.snippet.title}
-                </Typography>
-                <Typography align="left" variant="subtitle">
-                  Description:
-                  {item.snippet.description !== ""
-                    ? item.snippet.description
-                    : "Not Available"}
-                </Typography>
-                <Typography align="left" paragraph>
-                  Date: {item.snippet.publishedAt.substring(0, 10)}
-                </Typography>
-              </CardContent>
+              <CardActionArea onClick={() => {
+                console.log('Title:', item.snippet.title);
+                setVideoInfo({
+                  'title': item.snippet.title,
+                  'src': `https://www.youtube.com/embed/${item.id.videoId}`
+                });
+                setHideVideo(true);
+              }}>
+                  <CardMedia
+                    component="img"
+                    title={item.snippet.title}
+                    //src={`https://www.youtube.com/embed/${item.snippet.}`}
+                    src={item['snippet']['thumbnails']['medium']['url']}
+                    
+                  />
+                  <CardContent>
+                    <Typography
+                      align="center"
+                      gutterBottom
+                      variant="h5"
+                      component="h2"
+                    >
+                      {item.snippet.title}
+                    </Typography>
+                    <Typography align="left" variant="subtitle">
+                      Description:
+                      {item.snippet.description !== ""
+                        ? item.snippet.description
+                        : "Not Available"}
+                    </Typography>
+                    <Typography align="left" paragraph>
+                      Date: {item.snippet.publishedAt.substring(0, 10)}
+                    </Typography>
+                  </CardContent>
+              </CardActionArea>
             </Grid>
           ))
         ) : (
@@ -262,6 +303,24 @@ export default function CovidVideos() {
           </Grid>
         )}
       </Grid>
+      <Modal open={hideVideo} 
+             onClose={closeVideo}
+              className={classes.modal}
+              >
+        <Card xs={12} sm={6} md={3} className={classes.modalCard}>
+              <CardMedia className={classes.modalMedia} 
+                         component="iframe" title={videoInfo.title} 
+                         src={videoInfo.src} 
+                         allowFullScreen
+                         allow="autoPlay" 
+                         />
+        </Card>
+      </Modal>
+      {/* <Grid container direction="column">
+        <Grid item xs={12} sm={6} md={9} component={Card} className={classes.card}>
+          <CardMedia component="iframe" title={videoInfo.title} src={videoInfo.src} allowFullScreen/>
+        </Grid>
+      </Grid> */}
     </div>
   );
 }

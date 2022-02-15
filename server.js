@@ -1,6 +1,7 @@
 require('dotenv').config({path:'./.env'});
 const axios = require('axios'); 
 const express = require('express');
+const compression= require('compression')
 const port = process.env.PORT,
 app = express()
 
@@ -8,10 +9,9 @@ const API_URL = `https://www.googleapis.com/youtube/v3/search`;
 const API_KEY = process.env.API_KEY;//"AIzaSyDexPeBv0lqnTP9YMl_38y9HXMHDoaIvcg";
 const CHANNEL_ID = process.env.CHANNEL_ID; //"UCL03ygcTgIbe36o2Z7sReuQ";
 
-//Create axios object to make get queries
 
-app.use(express.json());
-
+//To improve app performance
+app.use(compression())
 async function getVideos(queryString, nextToken){
     let returnArg = {};
     if(arguments.length <2){
