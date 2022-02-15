@@ -27,7 +27,7 @@ async function getVideos(queryString, nextToken){
             channelId: CHANNEL_ID,
             part: "snippet",
             maxResults: 48,
-            key: "300 Spartans",
+            key: API_KEY,
             q: queryString
         }}).then((response) =>{
             returnArg = response.data;
