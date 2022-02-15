@@ -1,7 +1,8 @@
 require('dotenv').config({path:'./.env'});
 const axios = require('axios'); 
 const express = require('express');
-const compression= require('compression')
+const compression= require('compression');
+const helmet = require('helmet');
 const port = process.env.PORT,
 app = express()
 
@@ -11,7 +12,8 @@ const CHANNEL_ID = process.env.CHANNEL_ID; //"UCL03ygcTgIbe36o2Z7sReuQ";
 
 
 //To improve app performance
-app.use(compression())
+app.use(helmet());
+app.use(compression());
 async function getVideos(queryString, nextToken){
     let returnArg = {};
     if(arguments.length <2){
