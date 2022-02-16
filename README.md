@@ -41,6 +41,7 @@ It integrates with the Google YouTube Data V3 API to display video from the HCA 
 > 1. Conduct thorough testing.
 > 2. Install Nodemon to allow for forgiveable breaks in server.
 > 3. Introduce load-balancing
+> 4. Add Loading and time out logic.
 
 ## For any questions contact:
 
