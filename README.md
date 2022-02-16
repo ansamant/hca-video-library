@@ -17,6 +17,8 @@ It integrates with the Google YouTube Data V3 API to display video from the HCA 
 > - Go to clients folder through console and run npm install there to install all reactjs dependencies
 > - Go to Google API and create your own personal API Key
 > - Create a .env file in the source folder and API Key along with your required channel id and Port (8080)
+> - From root directory run code by typing "npm start" in the terminal. Now the server will be running.
+> - In a new terminal go to client directory and type npm start. Now the client will be running.
 
 ### Notable Packages Used:
 
@@ -37,7 +39,8 @@ It integrates with the Google YouTube Data V3 API to display video from the HCA 
 ### Pending Tasks
 
 > 1. Conduct thorough testing.
-> 2. Introduce Pagination to allow for more videos to be viewable by the end user.
+> 2. Install Nodemon to allow for forgiveable breaks in server.
+> 3. Introduce load-balancing
 
 ## For any questions contact:
 
